@@ -9,19 +9,52 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: cert-manager
-  namespace: kube-system
-  annotations:
-    argocd.argoproj.io/sync-wave: "-4"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: cert-manager
-    server: { { .Values.spec.destination.server } }
-  project: tools
+    server: https://kubernetes.default.svc
+  project: default
+  ignoreDifferences:
+    - group: apiextensions.k8s.io
+      jsonPointers:
+        - /status
+      kind: CustomResourceDefinition
+      name: certificaterequests.cert-manager.io
+    - group: apiextensions.k8s.io
+      jsonPointers:
+        - /status
+      kind: CustomResourceDefinition
+      name: certificates.cert-manager.io
+    - group: apiextensions.k8s.io
+      jsonPointers:
+        - /status
+      kind: CustomResourceDefinition
+      name: challenges.cert-manager.io
+    - group: apiextensions.k8s.io
+      jsonPointers:
+        - /status
+      kind: CustomResourceDefinition
+      name: challenges.acme.cert-manager.io
+    - group: apiextensions.k8s.io
+      jsonPointers:
+        - /status
+      kind: CustomResourceDefinition
+      name: clusterissuers.cert-manager.io
+    - group: apiextensions.k8s.io
+      jsonPointers:
+        - /status
+      kind: CustomResourceDefinition
+      name: issuers.cert-manager.io
+    - group: apiextensions.k8s.io
+      jsonPointers:
+        - /status
+      kind: CustomResourceDefinition
+      name: orders.acme.cert-manager.io
   source:
-    path: "deploy/charts/cert-manager"
-    repoURL: "https://github.com/jetstack/cert-manager.git"
+    repoURL: { { .Values.repoURL } }
+    path: deploy/charts/cert-manager
     targetRevision: "v1.2.0-alpha.1"
   syncPolicy:
     automated:
