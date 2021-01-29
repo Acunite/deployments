@@ -46,7 +46,7 @@ spec:
       kind: CustomResourceDefinition
       name: orders.acme.cert-manager.io
   source:
-    repoURL: { { .Values.repoURL } }
+    repoURL: https://github.com/jetstack/cert-manager
     path: deploy/charts/cert-manager
     targetRevision: "v1.2.0-alpha.1"
   syncPolicy:
