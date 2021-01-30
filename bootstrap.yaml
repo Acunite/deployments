@@ -10,7 +10,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: apps
+    path: tools
     repoURL: https://github.com/Acunite/deployments.git
     targetRevision: HEAD
   syncPolicy:
